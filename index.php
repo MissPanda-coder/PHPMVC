@@ -21,7 +21,7 @@ include 'pages/partials/menu.php'; // Inclusion du fichier du menu
         <div class="col-6 m-auto list p-3 mt-3 border-bottom border-top border-success-subtle border-5"> 
         <h2 class="fs-3 mb-4">Liste des utilisateurs par le dernier utilisateur inscrit</h2>
             <div class="list-user">
-                <?php displayUsers(); ?> <!-- Appel de la fonction pour afficher les utilisateurs -->
+                <?php displayPotion(); ?> <!-- Appel de la fonction pour afficher les utilisateurs -->
             </div> 
         </div>
     </div>

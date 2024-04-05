@@ -135,13 +135,14 @@ function getUserByEmail($email) {
 
 function createUser($name, $email, $password, $idMagie) { // Fonction pour créer un utilisateur
   global $pdo; // Utilisez l'objet PDO que vous avez créé dans db.php
+  $date = 'Y-m-d H:i:s';
   $hashPass = password_hash($password, PASSWORD_DEFAULT); // Hachage du mot de passe
   $sql = "INSERT INTO utilisateur (nom, email, motDePasse, dateInscription, niveauMagie_idniveauMagie) VALUES (:name, :email, :password, :dateInscription, :idniveauMagie)"; // Requête SQL pour insérer un utilisateur
   $stmt = $pdo->prepare($sql); // Préparation de la requête
   $stmt->bindParam(':name', $name); // Liaison de la variable $name à la requête
   $stmt->bindParam(':email', $email); // Liaison de la variable $email à la requête
   $stmt->bindParam(':password', $hashPass); // Liaison de la variable $hashPass à la requête
-  $stmt->bindParam(':dateInscription', date('Y-m-d H:i:s')); // Liaison de la date d'inscription à la requête
+  $stmt->bindParam(':dateInscription',$date); // Liaison de la date d'inscription à la requête
   $stmt->bindParam(':idniveauMagie', $idMagie); // Liaison de la variable $idMagie à la requête
   if ($stmt->execute()) { // Si la requête s'exécute
       $roleLevel = 1; // Niveau de rôle pour l'utilisateur
@@ -197,3 +198,68 @@ function validatePassword($password) { // Fonction pour valider le mot de passe
  
 }
 
+function displayPotion() { // Fonction pour afficher les potions
+  global $pdo; // Utilisez l'objet PDO que vous avez créé dans db.php
+  $sql = "SELECT nom,description FROM potionmagique"; // Requête SQL pour obtenir tous les effets
+  $stmt = $pdo->prepare($sql); // Préparation de la requête
+  $stmt->execute(); // Exécution de la requête
+  $potions = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupération de tous les résultats dans un tableau associatif
+  echo '<ul class="list-group">'; // Début du marquage HTML pour la liste
+  foreach ($potions as $potion) { // Parcours du tableau des résultats
+      echo '<li class="list-group-item">' . $potion['nom'] . '</br>' . $potion['description'] .'</li>'; // Affichage de chaque potion
+  }
+  echo '</ul>'; // Fin du marquage HTML pour la liste
+}
+
+function displayEffets() { // Fonction pour afficher les effets
+  global $pdo; // Utilisez l'objet PDO que vous avez créé dans db.php
+  $sql = "SELECT nom,description FROM effet"; // Requête SQL pour obtenir tous les effets
+  $stmt = $pdo->prepare($sql); // Préparation de la requête
+  $stmt->execute(); // Exécution de la requête
+  $effets = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupération de tous les résultats dans un tableau associatif
+  echo '<ul class="list-group">'; // Début du marquage HTML pour la liste
+  foreach ($effets as $effet) { // Parcours du tableau des résultats
+      echo '<li class="list-group-item">' . $effet['nom'] . '</br>' . $effet['description'] .'</li>'; // Affichage de chaque effet
+  }
+  echo '</ul>'; // Fin du marquage HTML pour la liste
+}
+function displayIngredients() { // Fonction pour afficher les ingrédients
+  global $pdo; // Utilisez l'objet PDO que vous avez créé dans db.php
+  $sql = "SELECT * FROM ingredient"; // Requête SQL pour obtenir tous les ingrédients
+  $stmt = $pdo->prepare($sql); // Préparation de la requête
+  $stmt->execute(); // Exécution de la requête
+  $ingredients = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupération de tous les résultats dans un tableau associatif
+  echo '<ul class="list-group">'; // Début du marquage HTML pour la liste
+  foreach ($ingredients as $ingredient) { // Parcours du tableau des résultats
+      echo '<li class="list-group-item">' . $ingredient['nom'] . '</li>'; // Affichage de chaque ingrédient
+  }
+  echo '</ul>'; // Fin du marquage HTML pour la liste
+}
+
+function createPotion($name, $email, $password, $idMagie) { // Fonction pour créer une potion
+  global $pdo; // Utilisez l'objet PDO que vous avez créé dans db.php
+  $date = 'Y-m-d H:i:s';
+  $hashPass = password_hash($password, PASSWORD_DEFAULT); // Hachage du mot de passe
+  $sql = "INSERT INTO potionmagique (nom, description, tempsPreparation, niveauMagie_idniveauMagie) VALUES (:name, :description, :tempsPreparation,:idniveauMagie)"; // Requête SQL pour insérer un utilisateur
+  $stmt = $pdo->prepare($sql); // Préparation de la requête
+  $stmt->bindParam(':name', $name); // Liaison de la variable $name à la requête
+  $stmt->bindParam(':description', $description); // Liaison de la variable $email à la requête
+  $stmt->bindParam(':tempsPreparation', $tempsPreparation); // Liaison de la variable $hashPass à la requête
+  $stmt->bindParam(':idniveauMagie', $idMagie); // Liaison de la variable $idMagie à la requête
+  if ($stmt->execute()) { // Si la requête s'exécute
+      $userId = $pdo->lastInsertId(); // Récupération de l'ID de l'utilisateur
+      $sql = "INSERT INTO utilisateur_has_roleUtilisateur (utilisateur_idutilisateur, roleUtilisateur_idroleUtilisateur) VALUES (:userId, :roleLevel)"; // Ajout du rôle utilisateur
+      $stmt = $pdo->prepare($sql); // Préparation de la requête
+      $stmt->bindParam(':userId', $userId); // Liaison de l'ID de l'utilisateur à la requête
+      $stmt->bindParam(':roleLevel', $roleLevel); // Liaison du niveau de rôle à la requête
+      $stmt->execute(); // Exécution de la requête
+      $sql = "SELECT roleUtilisateur.role FROM roleUtilisateur WHERE idroleUtilisateur = :roleLevel"; // Requête SQL pour obtenir le rôle de l'utilisateur
+      $stmt = $pdo->prepare($sql); // Préparation de la requête
+      $stmt->bindParam(':roleLevel', $roleLevel); // Liaison du niveau de rôle à la requête
+      $stmt->execute(); // Exécution de la requête
+      $roleLevel = $stmt->fetchColumn(); // Récupération du rôle de l'utilisateur
+      return ['userId' => $userId, 'roleLevel' => $roleLevel]; // Retourne l'ID de l'utilisateur
+  }
+  return false; // Retourne faux si la requête échoue
+}
+function validateUserExists($em

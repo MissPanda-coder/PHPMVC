@@ -9,7 +9,7 @@ include 'pages/partials/menu.php'; // Inclusion du fichier du menu
 ?>
 
 <div class="container-fluid text-center">
-    <h1 class="my-3">Bienvenue sur la création de votre espace Membres</h1>
+    <h1 class="my-5">Bienvenue sur le site des potions magiques</h1>
     <?php
     checkLogedOut();// Affichage du message de déconnexion?>
     <div class="row">
@@ -18,8 +18,8 @@ include 'pages/partials/menu.php'; // Inclusion du fichier du menu
         </div>
     </div>
     <div class="row">
-        <div class="col-6 m-auto list p-3 mt-3 border-bottom border-top border-success-subtle border-5"> 
-        <h2 class="fs-3 mb-4">Liste des utilisateurs par le dernier utilisateur inscrit</h2>
+        <div class="col-6 m-auto list p-3 mt-3 border-top border-success-subtle border-5"> 
+        <h2 class="fs-3 mb-4">Liste des potions existantes</h2>
             <div class="list-user">
                 <?php displayPotion(); ?> <!-- Appel de la fonction pour afficher les utilisateurs -->
             </div> 

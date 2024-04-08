@@ -26,7 +26,7 @@ include '../partials/menu.php'; // Inclusion du fichier du menu d'administration
     </div>
     <div class="row mt-5">
     <div class="col-lg-4 col-md-6 col-10 bg-light m-auto border border-1 rounded shadow p-3">
-    <h1 class="mt-3 mb-4 text-center h3">Inscription nouveau membre</h1>
+    <h1 class="mt-3 mb-4 text-center h3">Inscription nouveau membre par l'administrateur</h1>
     <?php displayMessage(); ?>
         <form method="POST" action="../controllers/addUser.php">
             <div class="mb-3">

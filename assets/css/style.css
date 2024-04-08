@@ -4,3 +4,28 @@
 .list-user{
     overflow-y: scroll;
 }
+
+.hiddenEffect{
+    display: none;
+}
+
+.hiddenIngredients{
+    display: none;
+}
+
+.container{
+    height:500px;
+}
+
+.lists{
+    height:900px;
+}
+
+.create{
+    height:900px;
+}
+
+.btn-danger{
+    text-transform: uppercase;
+    
+}

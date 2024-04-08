@@ -12,3 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const checkboxEffect = document.querySelector('.checkEffect');
+
+checkboxEffect.addEventListener('click', () => {
+        const displayEffects = document.querySelector('.hiddenEffect');
+        if (checkboxEffect.checked) {
+            displayEffects.style.display = "block";
+        } else {
+            displayEffects.style.display = "none";
+        }
+    });
+
+
+const checkboxIngredient = document.querySelector('.checkIngredient');
+
+checkboxIngredient.addEventListener('click', () => {
+        const displayIngredients = document.querySelector('.hiddenIngredients');
+        if (checkboxIngredient.checked) {
+            displayIngredients.style.display = "block";
+        } else {
+            displayIngredients.style.display = "none";
+        }
+    });
